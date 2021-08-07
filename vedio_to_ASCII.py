@@ -130,7 +130,7 @@ def txt2image(file_name,color_radio,scale_scale):
     for i in range(height):
         for j in range(width):
             pixel = im.getpixel((j,i))
-            if(scale_scale==1):
+            if(color_radio==1):
                 colors.append((pixel[0],pixel[1],pixel[2]))
             else:
                 colors.append((0,0,0))
@@ -264,6 +264,7 @@ def run():
     OUTPUT=input_save_address.get()
     color_radio=v.get()
     scale_scale=s.get()
+    print(color_radio)
 
     vc = video2txt_jpg(INPUT,color_radio,scale_scale)
     FPS = vc.get(cv2.CAP_PROP_FPS)#获取帧率
