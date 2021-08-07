@@ -36,14 +36,15 @@ root.iconbitmap("tmp.ico")
 os.remove("tmp.ico")
 
 f=open('bg.txt','r')
+imgdata=base64.b64decode(f.read())
 tmp=open('bg.jpg','wb+')
-tmp.write(base64.b64decode(img_bg))
+tmp.write(imgdata)
+f.close()
 tmp.close()
 canvas_root=tkinter.Canvas(root,width=700,height=800)
-image=ImageTk.PhotoImage(Image.open('bg.jpg').resize((700,800)))
+image=ImageTk.PhotoImage(Image.open('bg.jpg').resize((700,800),Image.NEAREST))
 canvas_root.create_image(350,400,image=image)
 canvas_root.pack()
-os.remove('bg.jpg')
 
 #欢迎关注知乎账号
 tip0=Label(root, text='欢迎关注知乎账号gudu12306',font = ('楷体',15),bg='#CCCEC4')
