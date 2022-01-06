@@ -6,18 +6,21 @@ from tkinter.scrolledtext import ScrolledText
 import threading
 import time
 import os
+import sys
 import cv2
 import subprocess
 from cv2 import VideoWriter,VideoWriter_fourcc,imread,resize
 from PIL import Image, ImageFont, ImageDraw ,ImageTk
 
-ascii_char = list("$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:oa+>!:+. ")
+ascii_char = list("$B%314567890*WM#oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:oa+>!:+. ")
 root=Tk()
-root.title("欢迎关注知乎账号gudu12306")
-path1=os.path.dirname(os.path.abspath(__file__))
+root.title("欢迎关注知乎账号“貔貅”")
+res=os.path.dirname(os.path.abspath(__file__))
+base_path=os.path.dirname(os.path.dirname(res))
 # print(path1)
-os.environ['PATH']+=os.pathsep+path1
-# print(os.environ['PATH'])
+sys.path.insert(0,base_path)
+# os.environ['PATH']+=os.pathsep+path1
+# # print(os.environ['PATH'])
 
 width=700
 height=800
@@ -47,7 +50,7 @@ canvas_root.create_image(350,400,image=image)
 canvas_root.pack()
 
 #欢迎关注知乎账号
-tip0=Label(root, text='欢迎关注知乎账号gudu12306',font = ('楷体',15),bg='#CCCEC4')
+tip0=Label(root, text='欢迎关注知乎账号貔貅',font = ('楷体',15),bg='#CCCEC4')
 tip0.place(relx=0.03,rely=0.03,anchor=W)
 
 #选择输入视频：
@@ -103,7 +106,7 @@ def browse_folder2():
     #把获得路径，插入保存地址输入框（即插入input_save_address输入框）
     input_save_address.insert(0,save_address)
 
-#将像素转换为ascii码
+#将像素点转换为ascii码
 def get_char(r,g,b,alpha = 256):
     if alpha == 0:
         return ''
@@ -224,7 +227,7 @@ def video2mp3(file_name):
     outfile_name = file_name.split('.')[-2]+'.mp3'
     if(os.path.exists(outfile_name)):
         os.remove(outfile_name)
-    p = subprocess.Popen('ffmpeg -i '+file_name+' -f mp3 '+outfile_name,shell=True)
+    p = subprocess.Popen('ffmpeg -i ' + '"' + file_name + '"' + ' -f mp3 ' + '"'+ outfile_name +'"',shell=True)
     while p.poll() is None:
         stext.insert(END,'正在提取音频......\n')
         stext.see(END)
@@ -239,10 +242,10 @@ def video2mp3(file_name):
 
 #合成音频和视频文件
 def video_add_mp3(file_name,mp3_file,OUTPUT):
-    outfile_name = OUTPUT+'/'+file_name.split('.')[-2].split('/')[-1]+'-txt.mp4'
+    outfile_name = OUTPUT+'/output.mp4'
     if(os.path.exists(outfile_name)):
         os.remove(outfile_name)
-    p = subprocess.Popen('ffmpeg -i '+file_name+' -i '+mp3_file+' -strict -2 -f mp4 '+outfile_name,shell=True)
+    p = subprocess.Popen('ffmpeg -i '+ '"' +file_name+ '"' +' -i '+ '"' +mp3_file+ '"' +' -strict -2 -f mp4 '+ '"' +outfile_name+ '"' ,shell=True)
     while p.poll() is None:
         stext.insert(END,'正在合成音频......\n')
         stext.see(END)
@@ -264,7 +267,6 @@ def run():
     OUTPUT=input_save_address.get()
     color_radio=v.get()
     scale_scale=s.get()
-    print(color_radio)
 
     vc = video2txt_jpg(INPUT,color_radio,scale_scale)
     FPS = vc.get(cv2.CAP_PROP_FPS)#获取帧率
